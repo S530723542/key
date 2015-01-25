@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.key.stock.common.Constant;
 import com.key.stock.common.SinaUtil;
 import com.key.stock.common.SourceType;
 import com.key.stock.common.TransUtil;
@@ -27,10 +28,10 @@ public class StockShowServiceImpl implements StockShowService
 {
 
 	@Autowired
-	StockCollectMapper stockCollectMapper;
+	StockCollectMapper	stockCollectMapper;
 
 	@Autowired
-	StockService stockService;
+	StockService		stockService;
 
 	@Transactional
 	public int collectStock(long userId, long stockId)
@@ -59,10 +60,11 @@ public class StockShowServiceImpl implements StockShowService
 
 		} else
 		{
-			Integer highest = stockCollectMapper.getFirstPriorityByUserId(userId);
-			if (highest==null)
+			Integer highest = stockCollectMapper
+					.getFirstPriorityByUserId(userId);
+			if (highest == null)
 			{
-				highest=0;
+				highest = 0;
 			}
 			record.setCreateTime(now);
 			record.setMotifyTime(now);
@@ -97,7 +99,7 @@ public class StockShowServiceImpl implements StockShowService
 	}
 
 	public List<StockVO> getStockCollectsByUserId(long userId, String source,
-			String type, Integer pageNum, Integer  pageSize)
+			String type, Integer pageNum, Integer pageSize)
 	{
 		List<StockVO> result = new ArrayList<StockVO>();
 		ListRecord<StockCollect> listRecord = new ListRecord<StockCollect>();
@@ -115,6 +117,7 @@ public class StockShowServiceImpl implements StockShowService
 			StockCollect stockCollect = list.get(i);
 			Stock stock = stockService.getStockById(stockCollect.getStockId());
 			StockVO stockVO = TransUtil.transToStockVO(stock, stockCollect);
+			stockVO.setIsCollected(true);
 			addImage(source, type, stockVO);
 			result.add(stockVO);
 		}
@@ -128,7 +131,8 @@ public class StockShowServiceImpl implements StockShowService
 		Date now = new Date();
 		StockCollect stockCollect1 = stockCollectMapper
 				.selectByPrimaryKeyForUpdate(id);
-		if (stockCollect1 == null)
+		if (stockCollect1 == null
+				|| DBConstant.IS_DELETE.equals(stockCollect1.getIsDelete()))
 		{
 			return ErrCode.STOCK_COLLECTING_NOT_EXIST;
 		}
@@ -165,7 +169,8 @@ public class StockShowServiceImpl implements StockShowService
 		Date now = new Date();
 		StockCollect stockCollect1 = stockCollectMapper
 				.selectByPrimaryKeyForUpdate(id);
-		if (stockCollect1 == null)
+		if (stockCollect1 == null
+				|| DBConstant.IS_DELETE.equals(stockCollect1.getIsDelete()))
 		{
 			return ErrCode.STOCK_COLLECTING_NOT_EXIST;
 		}
@@ -204,24 +209,12 @@ public class StockShowServiceImpl implements StockShowService
 		return count;
 	}
 
-	// @Override
-	// public StockVO getStockCollect(long userId, long stockId, String source,
-	// String type)
-	// {
-	// StockCollect record = new StockCollect();
-	// record.setIsDelete(DBConstant.IS_AVAILABLE);
-	// record.setUserId(userId);
-	// record.setStockId(stockId);
-	// StockCollect stockCollect = stockCollectMapper
-	// .selectByUniqueKey(record);
-	// Stock stock = stockService.getStockById(stockCollect.getStockId());
-	// StockVO stockVO = TransUtil.transToStockVO(stock, stockCollect);
-	// addImage(source, type, stockVO);
-	// return stockVO;
-	// }
-
 	private void addImage(String source, String type, StockVO stockVO)
 	{
+		if (stockVO == null)
+		{
+			return;
+		}
 		switch (source)
 		{
 		case SourceType.SINA:
@@ -243,7 +236,9 @@ public class StockShowServiceImpl implements StockShowService
 	{
 		Stock stock = stockService.getStockByExCode(exchange, code);
 		StockVO stockVO = TransUtil.transToStockVO(stock, null);
+
 		addImage(source, type, stockVO);
+
 		return stockVO;
 	}
 

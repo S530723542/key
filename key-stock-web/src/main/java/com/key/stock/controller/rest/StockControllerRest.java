@@ -25,8 +25,8 @@ import com.key.tools.stock.pojo.ExCode;
 @Controller
 public class StockControllerRest
 {
-	
-	private Logger logger=Logger.getLogger(StockControllerRest.class);
+
+	private Logger		logger	= Logger.getLogger(StockControllerRest.class);
 
 	@Autowired
 	StockShowService	stockShowService;
@@ -95,7 +95,7 @@ public class StockControllerRest
 			}
 		} catch (Exception e)
 		{
-			logger.error("get stock failed!",e);
+			logger.error("get stock failed!", e);
 			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
 			restResult.setErrMsg(e.getMessage());
 			restResult.setData(null);
@@ -119,8 +119,8 @@ public class StockControllerRest
 				restResult.setErrCode(ErrCode.NOT_EXIST);
 				restResult.setErrMsg("用户不存在，请先登录！");
 				restResult.setData(false);
-			}
-			else {
+			} else
+			{
 				int errCode = stockShowService.collectStock(userId, stockId);
 				restResult.setErrCode(errCode);
 				if (errCode != 0)
@@ -128,10 +128,94 @@ public class StockControllerRest
 					restResult.setData(false);
 				}
 			}
-			
+
 		} catch (Exception e)
 		{
-			logger.error("collect stock failed!",e);
+			logger.error("collect stock failed!", e);
+			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
+			restResult.setErrMsg(e.getMessage());
+			restResult.setData(null);
+		}
+		return restResult;
+	}
+
+	@RequestMapping(value = "stock/deleteCollect", method = RequestMethod.GET)
+	public @ResponseBody RestResult<Boolean> deleteCollect(ModelMap model,
+			HttpSession session,
+			@RequestParam(value = "stockId", required = true) Long stockId)
+	{
+		RestResult<Boolean> restResult = new RestResult<Boolean>();
+		try
+		{
+			Long userId = (Long) session.getAttribute("userId");
+			userId = 1L;
+			int errCode = stockShowService.deleteStockCollect(userId, stockId);
+			if (errCode == ErrCode.SUCCESS)
+			{
+				restResult.setData(true);
+			} else
+			{
+				restResult.setData(false);
+			}
+			restResult.setErrCode(errCode);
+		} catch (Exception e)
+		{
+			logger.error("delete collect failed!", e);
+			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
+			restResult.setErrMsg(e.getMessage());
+			restResult.setData(null);
+		}
+		return restResult;
+	}
+
+	@RequestMapping(value = "stock/upCollect", method = RequestMethod.GET)
+	public @ResponseBody RestResult<Boolean> upCollect(ModelMap model,
+			HttpSession session,
+			@RequestParam(value = "id", required = true) Long id)
+	{
+		RestResult<Boolean> restResult = new RestResult<Boolean>();
+		try
+		{
+			int errCode = stockShowService.upStockCollect(id);
+			if (errCode == ErrCode.SUCCESS)
+			{
+				restResult.setData(true);
+			} else
+			{
+				restResult.setData(false);
+			}
+			restResult.setErrCode(errCode);
+		} catch (Exception e)
+		{
+			logger.error("up collect failed!", e);
+			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
+			restResult.setErrMsg(e.getMessage());
+			restResult.setData(null);
+		}
+		return restResult;
+	}
+
+	@RequestMapping(value = "stock/downCollect", method = RequestMethod.GET)
+	public @ResponseBody RestResult<Boolean> downCollect(ModelMap model,
+			HttpSession session,
+			@RequestParam(value = "id", required = true) Long id)
+	{
+		RestResult<Boolean> restResult = new RestResult<Boolean>();
+		try
+		{
+
+			int errCode = stockShowService.downStockCollect(id);
+			if (errCode == ErrCode.SUCCESS)
+			{
+				restResult.setData(true);
+			} else
+			{
+				restResult.setData(false);
+			}
+			restResult.setErrCode(errCode);
+		} catch (Exception e)
+		{
+			logger.error("up collect failed!", e);
 			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
 			restResult.setErrMsg(e.getMessage());
 			restResult.setData(null);
