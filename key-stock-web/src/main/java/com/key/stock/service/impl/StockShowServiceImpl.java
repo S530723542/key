@@ -59,7 +59,11 @@ public class StockShowServiceImpl implements StockShowService
 
 		} else
 		{
-			int highest = stockCollectMapper.getFirstPriorityByUserId(userId);
+			Integer highest = stockCollectMapper.getFirstPriorityByUserId(userId);
+			if (highest==null)
+			{
+				highest=0;
+			}
 			record.setCreateTime(now);
 			record.setMotifyTime(now);
 			record.setIsDelete(DBConstant.IS_AVAILABLE);
@@ -93,7 +97,7 @@ public class StockShowServiceImpl implements StockShowService
 	}
 
 	public List<StockVO> getStockCollectsByUserId(long userId, String source,
-			String type, int pageNum, int pageSize)
+			String type, Integer pageNum, Integer  pageSize)
 	{
 		List<StockVO> result = new ArrayList<StockVO>();
 		ListRecord<StockCollect> listRecord = new ListRecord<StockCollect>();

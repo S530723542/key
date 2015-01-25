@@ -14,7 +14,7 @@ public interface StockShowService
 	// source,String type);
 
 	public List<StockVO> getStockCollectsByUserId(long userId, String source,
-			String type, int pageNum, int pageSize);
+			String type, Integer pageNum, Integer pageSize);
 
 	public int countStockCollectsByUserId(long userId);
 

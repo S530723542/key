@@ -13,6 +13,7 @@
 	<import resource="mybatis/datasrc.xml" />
 	<import resource="member/member.xml" />
 	<import resource="stock/stock.xml" />
+	<import resource="stock/stock-collect.xml" />
 	<import resource="test/test.xml" />
 
 	<bean id="httpAgent" class="com.key.tools.http.HttpAgent"

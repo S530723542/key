@@ -7,12 +7,12 @@
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="mapperLocations"
-			value="classpath:com/key/tools/stock/db/mapping/*.xml" />
+			value="classpath:com/key/stock/db/mapping/*.xml" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.key.tools.stock.db.dao" />
+		<property name="basePackage" value="com.key.stock.db.dao" />
 	</bean>
 
 </beans>

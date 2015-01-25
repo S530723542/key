@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,6 +25,8 @@ import com.key.tools.stock.pojo.ExCode;
 @Controller
 public class StockControllerRest
 {
+	
+	private Logger logger=Logger.getLogger(StockControllerRest.class);
 
 	@Autowired
 	StockShowService	stockShowService;
@@ -45,7 +48,7 @@ public class StockControllerRest
 		{
 
 			Long userId = (Long) session.getAttribute("userId");
-
+			userId = 1L;
 			if (exCodeString != null)
 			{
 				ExCode exCode = new ExCode();
@@ -92,6 +95,7 @@ public class StockControllerRest
 			}
 		} catch (Exception e)
 		{
+			logger.error("get stock failed!",e);
 			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
 			restResult.setErrMsg(e.getMessage());
 			restResult.setData(null);
@@ -99,7 +103,7 @@ public class StockControllerRest
 		return restResult;
 	}
 
-	@RequestMapping(value = "stock/collect", method = RequestMethod.POST)
+	@RequestMapping(value = "stock/collect", method = RequestMethod.GET)
 	public @ResponseBody RestResult<Boolean> collectStock(ModelMap model,
 			HttpSession session,
 			@RequestParam(value = "stockId", required = true) Long stockId)
@@ -109,20 +113,25 @@ public class StockControllerRest
 		{
 
 			Long userId = (Long) session.getAttribute("userId");
+			userId = 1L;
 			if (userId == null)
 			{
 				restResult.setErrCode(ErrCode.NOT_EXIST);
 				restResult.setErrMsg("用户不存在，请先登录！");
 				restResult.setData(false);
 			}
-			int errCode = stockShowService.collectStock(userId, stockId);
-			restResult.setErrCode(errCode);
-			if (errCode != 0)
-			{
-				restResult.setData(false);
+			else {
+				int errCode = stockShowService.collectStock(userId, stockId);
+				restResult.setErrCode(errCode);
+				if (errCode != 0)
+				{
+					restResult.setData(false);
+				}
 			}
+			
 		} catch (Exception e)
 		{
+			logger.error("collect stock failed!",e);
 			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
 			restResult.setErrMsg(e.getMessage());
 			restResult.setData(null);

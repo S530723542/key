@@ -53,13 +53,13 @@ public interface StockCollectMapper
 	 *
 	 * @mbggenerated
 	 */
-	int updateByPrimaryKey(StockCollect record);
+	Integer updateByPrimaryKey(StockCollect record);
 
 	StockCollect selectByUniqueKeyForUpdate(StockCollect record);
 
-	int getFirstPriorityByUserId(Long userId);
+	Integer getFirstPriorityByUserId(Long userId);
 
-	int priorityAutoReduce(StockCollect record);
+	Integer priorityAutoReduce(StockCollect record);
 	
 	StockCollect selectByUniqueKey(StockCollect record);
 	
