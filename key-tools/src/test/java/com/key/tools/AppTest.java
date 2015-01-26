@@ -19,10 +19,6 @@ import com.google.gson.Gson;
 import com.key.tools.common.RestResult;
 import com.key.tools.http.HttpAgent;
 import com.key.tools.member.service.QQLoginService;
-import com.key.tools.stock.pojo.BaiduRetData;
-import com.key.tools.stock.pojo.BaiduStockJson;
-import com.key.tools.stock.pojo.SinaData;
-import com.key.tools.stock.pojo.SinaStock;
 import com.key.tools.test.TestService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -141,11 +137,14 @@ public class AppTest
 		try
 		{
 			RestResult<String> result = httpAgent.getAndRetry(url, params);
-			
-			System.out.println("******************************************");
-
-			System.out.println(result.getData());
-			System.out.println("******************************************");
+			String s=result.getData();
+			String[] ss=s.split("\n");
+			for (int i = 0; i < 1; i++)
+			{
+				
+				System.out.println(ss[i]);
+				System.out.println("******************");
+			}
 		}catch (Exception e)
 		{
 			e.printStackTrace();

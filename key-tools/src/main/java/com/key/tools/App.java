@@ -2,7 +2,6 @@ package com.key.tools;
 
 import java.util.Date;
 
-import com.key.tools.stock.pojo.ExCode;
 
 /**
  * Hello world!
