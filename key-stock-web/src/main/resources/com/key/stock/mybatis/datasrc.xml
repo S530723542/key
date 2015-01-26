@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	<import resource="datasrc-mysql.xml" />
-
+	<import resource="datasrc-stock.xml" />
 	<!-- 开启事务注解驱动 -->
 	<tx:annotation-driven />
 

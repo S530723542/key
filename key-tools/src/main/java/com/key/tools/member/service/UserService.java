@@ -9,7 +9,7 @@ public interface UserService
 	
 	public long addUser();
 	
-	public long addLocalLogin(String name,Integer phone,String email,String password);
+	public int addLocalLogin(String name,Integer phone,String email,String password);
 	
 	public User getUserByName(String name);
 	
@@ -33,11 +33,11 @@ public interface UserService
 	
 	public int motifyPassword(Long id,String password,String newPassword);
 	
-	public long verifyPasswordByName(String name,String password);
+	public int verifyPasswordByName(String name,String password);
 	
-	public long verifyPasswordByPhone(Integer phone,String password);
+	public int verifyPasswordByPhone(Integer phone,String password);
 	
-	public long verifyPasswordByEmail(String email,String password);
+	public int verifyPasswordByEmail(String email,String password);
 	
 	public int setPassword(Long id,String password);
 	

@@ -1,21 +1,27 @@
 package com.key.stock.controller.rest;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.key.stock.common.Constant;
 import com.key.stock.pojo.UserBaseMsgVO;
 import com.key.tools.common.ErrCode;
 import com.key.tools.common.RestResult;
 import com.key.tools.member.db.model.User;
 import com.key.tools.member.service.UserService;
 
+@RequestMapping("/key/web/")
+@Controller
 public class UserControllerRest
 {
 	private Logger logger = Logger.getLogger(UserControllerRest.class);
@@ -25,24 +31,28 @@ public class UserControllerRest
 
 	@RequestMapping(value = "stock/login", method = RequestMethod.GET)
 	public @ResponseBody RestResult<UserBaseMsgVO> login(ModelMap model,
-			HttpSession session,
+			HttpSession session, HttpServletResponse response,
 			@RequestParam(value = "username", required = true) String username,
 			@RequestParam(value = "password", required = true) String password)
 	{
+		response.addCookie(new Cookie("username", "hehe"));
+		session.getServletContext().getServerInfo();
+
 		RestResult<UserBaseMsgVO> restResult = new RestResult<UserBaseMsgVO>();
 		try
 		{
-			long id = userService.verifyPasswordByName(username, password);
-			if (id == ErrCode.SUCCESS)
+			int errCode = userService.verifyPasswordByName(username, password);
+			if (errCode == ErrCode.SUCCESS)
 			{
 				restResult.setErrCode(ErrCode.SUCCESS);
-				User user = userService.getUserById(id);
+				User user = userService.getUserByName(username);
 				UserBaseMsgVO userBaseMsgVO = new UserBaseMsgVO();
 				userBaseMsgVO.setUsername(user.getUserName());
 				restResult.setData(userBaseMsgVO);
+				session.setAttribute(Constant.USER_ID, user.getId());
 			} else
 			{
-				restResult.setErrCode((int) id);
+				restResult.setErrCode(errCode);
 			}
 
 		} catch (Exception e)
@@ -64,7 +74,7 @@ public class UserControllerRest
 		RestResult<Boolean> restResult = new RestResult<Boolean>();
 		try
 		{
-			Long userId = (Long) session.getAttribute("userId");
+			Long userId = (Long) session.getAttribute(Constant.USER_ID);
 			userId = 1L;
 			if (userId == null)
 			{
@@ -103,17 +113,19 @@ public class UserControllerRest
 		RestResult<UserBaseMsgVO> restResult = new RestResult<UserBaseMsgVO>();
 		try
 		{
-			long id = userService.addLocalLogin(username, null, null, password);
-			if (id == ErrCode.SUCCESS)
+			int errCode = userService.addLocalLogin(username, null, null,
+					password);
+			if (errCode == ErrCode.SUCCESS)
 			{
 				restResult.setErrCode(ErrCode.SUCCESS);
-				User user = userService.getUserById(id);
+				User user = userService.getUserByName(username);
 				UserBaseMsgVO userBaseMsgVO = new UserBaseMsgVO();
 				userBaseMsgVO.setUsername(user.getUserName());
 				restResult.setData(userBaseMsgVO);
+				session.setAttribute(Constant.USER_ID, user.getId());
 			} else
 			{
-				restResult.setErrCode((int) id);
+				restResult.setErrCode((int) errCode);
 			}
 
 		} catch (Exception e)
@@ -124,4 +136,23 @@ public class UserControllerRest
 		}
 		return restResult;
 	}
+
+	@RequestMapping(value = "stock/loginout", method = RequestMethod.GET)
+	public @ResponseBody RestResult<Boolean> loginout(ModelMap model,
+			HttpSession session)
+	{
+		RestResult<Boolean> restResult = new RestResult<Boolean>();
+		try
+		{
+			
+			session.removeAttribute(Constant.USER_ID);
+		} catch (Exception e)
+		{
+			logger.error("register failed!", e);
+			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
+			restResult.setErrMsg(e.getMessage());
+		}
+		return restResult;
+	}
+
 }

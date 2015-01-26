@@ -202,7 +202,8 @@
 		<if test="data.isDelete != null">
 			and is_delete = #{data.isDelete,jdbcType=TINYINT}
 		</if>
-		limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+		order by priority desc 
+		limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}	
 	</select>
 
 	<select id="getFirstPriorityByUserId" resultType="java.lang.Integer"

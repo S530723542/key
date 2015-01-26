@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService
 
 	@Override
 	@Transactional
-	public long addLocalLogin(String name, Integer phone, String email,
+	public int addLocalLogin(String name, Integer phone, String email,
 			String password)
 	{
 		User user = new User();
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService
 		userMapper.insertAndReturnId(user);
 		logger.info("[addLocalLogin] : [name:" + name + "], [phone:" + phone
 				+ "], [email:" + email + "], [password:" + password + "] SUCCESS!");
-		return user.getId();
+		return ErrCode.SUCCESS;
 	}
 
 	@Override
@@ -310,7 +310,7 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
-	public long verifyPasswordByName(String name, String password)
+	public int verifyPasswordByName(String name, String password)
 	{
 		User record = new User();
 		record.setUserName(name);
@@ -332,13 +332,13 @@ public class UserServiceImpl implements UserService
 			return ErrCode.NOT_MATCH;
 		} else
 		{
-			return user.getId();
+			return ErrCode.SUCCESS;
 		}
 
 	}
 
 	@Override
-	public long verifyPasswordByPhone(Integer phone, String password)
+	public int verifyPasswordByPhone(Integer phone, String password)
 	{
 		User record = new User();
 		record.setPhone(phone);
@@ -360,12 +360,12 @@ public class UserServiceImpl implements UserService
 			return ErrCode.NOT_MATCH;
 		} else
 		{
-			return user.getId();
+			return ErrCode.SUCCESS;
 		}
 	}
 
 	@Override
-	public long verifyPasswordByEmail(String email, String password)
+	public int verifyPasswordByEmail(String email, String password)
 	{
 		User record = new User();
 		record.setEmail(email);
@@ -387,7 +387,7 @@ public class UserServiceImpl implements UserService
 			return ErrCode.NOT_MATCH;
 		} else
 		{
-			return user.getId();
+			return ErrCode.SUCCESS;
 		}
 	}
 

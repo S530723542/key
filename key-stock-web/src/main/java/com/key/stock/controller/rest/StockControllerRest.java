@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.key.stock.common.Constant;
 import com.key.stock.pojo.StockVO;
 import com.key.stock.service.StockShowService;
 import com.key.tools.common.ErrCode;
@@ -47,7 +48,7 @@ public class StockControllerRest
 		try
 		{
 
-			Long userId = (Long) session.getAttribute("userId");
+			Long userId = (Long) session.getAttribute(Constant.USER_ID);
 			userId = 1L;
 			if (exCodeString != null)
 			{
@@ -112,7 +113,7 @@ public class StockControllerRest
 		try
 		{
 
-			Long userId = (Long) session.getAttribute("userId");
+			Long userId = (Long) session.getAttribute(Constant.USER_ID);
 			userId = 1L;
 			if (userId == null)
 			{
@@ -147,7 +148,7 @@ public class StockControllerRest
 		RestResult<Boolean> restResult = new RestResult<Boolean>();
 		try
 		{
-			Long userId = (Long) session.getAttribute("userId");
+			Long userId = (Long) session.getAttribute(Constant.USER_ID);
 			userId = 1L;
 			int errCode = stockShowService.deleteStockCollect(userId, stockId);
 			if (errCode == ErrCode.SUCCESS)
