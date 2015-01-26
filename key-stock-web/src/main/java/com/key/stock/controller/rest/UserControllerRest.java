@@ -75,7 +75,6 @@ public class UserControllerRest
 		try
 		{
 			Long userId = (Long) session.getAttribute(Constant.USER_ID);
-			userId = 1L;
 			if (userId == null)
 			{
 				restResult.setErrCode(ErrCode.NOT_EXIST);

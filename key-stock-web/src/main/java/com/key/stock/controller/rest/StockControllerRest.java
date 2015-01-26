@@ -49,7 +49,6 @@ public class StockControllerRest
 		{
 
 			Long userId = (Long) session.getAttribute(Constant.USER_ID);
-			userId = 1L;
 			if (exCodeString != null)
 			{
 				ExCode exCode = new ExCode();
@@ -114,7 +113,6 @@ public class StockControllerRest
 		{
 
 			Long userId = (Long) session.getAttribute(Constant.USER_ID);
-			userId = 1L;
 			if (userId == null)
 			{
 				restResult.setErrCode(ErrCode.NOT_EXIST);
@@ -127,6 +125,9 @@ public class StockControllerRest
 				if (errCode != 0)
 				{
 					restResult.setData(false);
+				}
+				else {
+					restResult.setData(true);
 				}
 			}
 
@@ -149,7 +150,6 @@ public class StockControllerRest
 		try
 		{
 			Long userId = (Long) session.getAttribute(Constant.USER_ID);
-			userId = 1L;
 			int errCode = stockShowService.deleteStockCollect(userId, stockId);
 			if (errCode == ErrCode.SUCCESS)
 			{
