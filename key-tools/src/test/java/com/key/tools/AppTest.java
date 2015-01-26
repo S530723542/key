@@ -27,12 +27,12 @@ import com.key.tools.test.TestService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 // 使用junit4进行测试
-@ContextConfiguration("classpath:applicationContext.xml")
+@ContextConfiguration("classpath:com/key/tools/applicationContext.xml")
 public class AppTest
 {
 
-	@Autowired
-	TestService testService;
+//	@Autowired
+//	TestService testService;
 
 	@Autowired
 	@Qualifier(value = "httpAgent")
