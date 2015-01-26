@@ -1,10 +1,8 @@
 package com.key.tools;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
 import org.junit.Test;
@@ -17,7 +15,7 @@ import com.key.tools.stock.service.StockService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 // 使用junit4进行测试
-@ContextConfiguration("classpath:applicationContext.xml")
+@ContextConfiguration("classpath:com/key/tools/applicationContext.xml")
 public class StockServiceTest
 {
 	@Autowired
@@ -33,7 +31,7 @@ public class StockServiceTest
 		String code = null;
 		String exChange = null;
 		
-		File sz = new File("D:/gitlab/my/tools/doc/stock/sz.txt");
+		File sz = new File("D:/github/tools/doc/stock/sz.txt");
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				new FileInputStream(sz),"gbk"));
 		exChange = "sz";
@@ -67,7 +65,7 @@ public class StockServiceTest
 		///////////////////////////////////////////////////////////////
 		
 		
-		File sh = new File("D:/gitlab/my/tools/doc/stock/sh.txt");
+		File sh = new File("D:/github/tools/doc/stock/sh.txt");
 		br = new BufferedReader(new InputStreamReader(
 				new FileInputStream(sh),"gbk"));
 		exChange = "sh";

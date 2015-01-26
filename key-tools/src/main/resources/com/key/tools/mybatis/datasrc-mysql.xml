@@ -6,7 +6,7 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
 		<property name="url"
-			value="jdbc:mysql://localhost:3306/tools?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"></property>
+			value="jdbc:mysql://localhost:3306/stock?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"></property>
 		<property name="username" value="root"></property>
 		<property name="password" value="gundamseeds"></property>
 		<property name="maxActive" value="100"></property>
