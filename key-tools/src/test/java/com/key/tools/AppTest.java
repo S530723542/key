@@ -3,7 +3,10 @@ package com.key.tools;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -125,6 +128,7 @@ public class AppTest
 	@Test
 	public void downloadTest()
 	{
+
 		String url = "http://ichart.yahoo.com/table.csv";
 
 		String code = "002230.sz";

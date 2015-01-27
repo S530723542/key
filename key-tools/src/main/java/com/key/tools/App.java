@@ -1,6 +1,10 @@
 package com.key.tools;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -11,17 +15,14 @@ public class App
 {
 	public static void main(String[] args)
 	{
-		String s = "<li><a target=\"_blank\" href=\"http://quote.eastmoney.com/sz000001.html\">平安银行(000001)</a></li>";
-		String[] ss = s.split("<|>");
-
-		System.out.println(ss[4]);
-		String value = ss[4];
-		ss = value.split("\\(|\\)");
-		String name = ss[0];
-		System.out.println(name);
-		String code = ss[1];
-		
-		System.out.println(code);
+		List<String> list=new ArrayList<String>();
+		list.add("1");
+		list.add("2");
+//		LinkedList<E>
+		Iterator<String> iterator=list.iterator();
+		iterator.next();
+		iterator.remove();
+		System.out.println(list.get(0));
 		System.out.println("Hello World!");
 	}
 }

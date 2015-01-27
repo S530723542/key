@@ -7,17 +7,25 @@ import com.key.tools.stock.db.model.StockHistory;
 
 public class KLine
 {
-	private Date date;
+	private Date				date;
 
-	private Double open;
+	private Double				open;
 
-	private Double close;
+	private Double				close;
 
-	private Double high;
+	private Double				high;
 
-	private Double low;
+	private Double				low;
 
-	private Integer cycle;
+	private Integer				cycle;
+
+	public final static Integer	POSITIVE	= 1;
+
+	public final static Integer	NEGATIVE	= -1;
+
+	public final static Integer	BALANCE		= 0;
+
+	private Integer				type;
 
 	public void init(List<StockHistory> list, int index, int cycle, Date date)
 	{
@@ -61,6 +69,16 @@ public class KLine
 		setClose(close);
 		setLow(low);
 		setHigh(high);
+		if (open == close)
+		{
+			setType(BALANCE);
+		} else if (open > close)
+		{
+			setType(NEGATIVE);
+		} else
+		{
+			setType(POSITIVE);
+		}
 
 	}
 
@@ -122,6 +140,16 @@ public class KLine
 	public void setCycle(Integer cycle)
 	{
 		this.cycle = cycle;
+	}
+
+	public Integer getType()
+	{
+		return type;
+	}
+
+	public void setType(Integer type)
+	{
+		this.type = type;
 	}
 
 }
