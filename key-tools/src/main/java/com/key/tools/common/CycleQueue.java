@@ -16,18 +16,22 @@ import java.util.Queue;
  */
 public class CycleQueue<E> implements Queue<E>
 {
-	private List<E>	list;
+	private List<E> list;
 
-	private int		length;
+	private int length;
 
-	private int		head;
+	private int head;
 
-	private int		end;
+	private int end;
 
 	public CycleQueue(int length)
 	{
 		this.length = length;
 		list = new ArrayList<E>(length + 1);
+		for (int i = 0; i <= length; i++)
+		{
+			list.add(null);
+		}
 		head = 0;
 		end = 0;
 	}
@@ -196,12 +200,29 @@ public class CycleQueue<E> implements Queue<E>
 	@Override
 	public boolean add(E e)
 	{
-		if (end == head)
+		int size = size();
+		if (size == length)
 		{
 			throw new IllegalStateException();
 		}
-		list.add(end, e);
+		list.set(end, e);
 		end = getIndex(end, 1);
+		return true;
+	}
+
+	public boolean addCyc(E e)
+	{
+
+		if (length <= 0)
+		{
+			return false;
+		}
+		int size = size();
+		if (size == length)
+		{
+			poll();
+		}
+		add(e);
 		return true;
 	}
 
@@ -252,7 +273,7 @@ public class CycleQueue<E> implements Queue<E>
 	public E get(int i)
 	{
 		int size = size();
-		if (i > size)
+		if (i >= size)
 		{
 			throw new ArrayIndexOutOfBoundsException("size is " + size
 					+ " ,but i is " + i);
@@ -264,11 +285,16 @@ public class CycleQueue<E> implements Queue<E>
 	private int getIndex(int i, int j)
 	{
 		int index = i + j;
-		if (index > list.size())
+		if (index > length)
 		{
-			index = index - list.size();
+			index = index - length - 1;
+		} else if (index < 0)
+		{
+			index = index + length + 1;
 		}
+
 		return index;
+
 	}
 
 	@Override
@@ -287,26 +313,42 @@ public class CycleQueue<E> implements Queue<E>
 
 	private class Itr implements Iterator<E>
 	{
+		private Integer index = head;
 
 		@Override
 		public boolean hasNext()
 		{
-			// TODO Auto-generated method stub
-			return false;
+			if (index == end)
+			{
+				return false;
+			} else
+			{
+				return true;
+			}
+
 		}
 
 		@Override
 		public E next()
 		{
-			// TODO Auto-generated method stub
-			return null;
+			if (index == end)
+			{
+				throw new NoSuchElementException();
+			} else
+			{
+				E e = list.get(index);
+				index = getIndex(index, 1);
+				return e;
+			}
+
 		}
 
 		@Override
 		public void remove()
 		{
 			// TODO Auto-generated method stub
-
+			throw new UnsupportedOperationException(
+					"this function is not supported!");
 		}
 
 	}

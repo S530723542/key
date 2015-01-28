@@ -1,31 +1,35 @@
 package com.key.tools.stock.pojo;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import com.key.tools.stock.db.model.StockHistory;
 
 public class KLine
 {
-	private Date				date;
+	private Date date;
 
-	private Double				open;
+	private Double open;
 
-	private Double				close;
+	private Double close;
 
-	private Double				high;
+	private Double top;
 
-	private Double				low;
+	private Double floor;
 
-	private Integer				cycle;
+	private Double high;
 
-	public final static Integer	POSITIVE	= 1;
+	private Double low;
 
-	public final static Integer	NEGATIVE	= -1;
+	private Integer cycle;
 
-	public final static Integer	BALANCE		= 0;
+	private final static Integer POSITIVE = 1;
 
-	private Integer				type;
+	private final static Integer NEGATIVE = -1;
+
+	private final static Integer BALANCE = 0;
+
+	private Integer type;
 
 	public void init(List<StockHistory> list, int index, int cycle, Date date)
 	{
@@ -65,6 +69,7 @@ public class KLine
 			}
 		}
 		close = list.get(end).getClose();
+		setDate(date);
 		setOpen(open);
 		setClose(close);
 		setLow(low);
@@ -72,14 +77,53 @@ public class KLine
 		if (open == close)
 		{
 			setType(BALANCE);
+			setTop(open);
+			setFloor(open);
 		} else if (open > close)
 		{
 			setType(NEGATIVE);
+			setTop(open);
+			setFloor(close);
 		} else
 		{
 			setType(POSITIVE);
+			setTop(close);
+			setFloor(open);
 		}
 
+	}
+
+	public boolean isBalance()
+	{
+		if (type == BALANCE)
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
+
+	public boolean isNegative()
+	{
+		if (type == NEGATIVE)
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
+
+	public boolean isPositive()
+	{
+		if (type == POSITIVE)
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
 	}
 
 	public Date getDate()
@@ -150,6 +194,26 @@ public class KLine
 	public void setType(Integer type)
 	{
 		this.type = type;
+	}
+
+	public Double getTop()
+	{
+		return top;
+	}
+
+	public void setTop(Double top)
+	{
+		this.top = top;
+	}
+
+	public Double getFloor()
+	{
+		return floor;
+	}
+
+	public void setFloor(Double floor)
+	{
+		this.floor = floor;
 	}
 
 }
