@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.key.stock.common.Constant;
+import com.key.stock.controller.image.CaptchaControllerImage;
 import com.key.stock.pojo.UserBaseMsgVO;
 import com.key.tools.common.ErrCode;
 import com.key.tools.common.RestResult;
@@ -107,11 +108,19 @@ public class UserControllerRest
 	public @ResponseBody RestResult<UserBaseMsgVO> register(ModelMap model,
 			HttpSession session,
 			@RequestParam(value = "username", required = true) String username,
-			@RequestParam(value = "password", required = true) String password)
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "captcha", required = true) String captcha)
 	{
 		RestResult<UserBaseMsgVO> restResult = new RestResult<UserBaseMsgVO>();
 		try
 		{
+			if (!CaptchaControllerImage.vertifyCaptcha(session, captcha))
+			{
+				logger.error("验证码错误!");
+				restResult.setErrCode(ErrCode.CAPTCHA_ERROR);
+				restResult.setErrMsg("验证码错误");
+				return restResult;
+			}
 			int errCode = userService.addLocalLogin(username, null, null,
 					password);
 			if (errCode == ErrCode.SUCCESS)

@@ -11,6 +11,8 @@ public class ErrCode
 
 	public static final int MORE_THAN_ONE = -10003;
 	
+	public static final int CAPTCHA_ERROR = -10004;
+	
 	public static final int PHONE_EXIST = -12002;
 
 	public static final int EMAIL_EXIST = -12003;

@@ -11,9 +11,9 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<import resource="classpath:com/key/tools/mybatis/datasrc.xml" />
-<!-- 	<import resource="classpath:com/key/tools/member/member.xml" /> -->
-<!-- 	<import resource="classpath:com/key/tools/stock/stock.xml" /> -->
-<!-- 	<import resource="classpath:com/key/tools/test/test.xml" /> -->
+	<!-- <import resource="classpath:com/key/tools/member/member.xml" /> -->
+	<!-- <import resource="classpath:com/key/tools/stock/stock.xml" /> -->
+	<!-- <import resource="classpath:com/key/tools/test/test.xml" /> -->
 
 	<context:component-scan base-package="com.key.tools.*.service"
 		use-default-filters="false">
@@ -24,6 +24,14 @@
 
 	<bean id="httpAgent" class="com.key.tools.http.HttpAgent"
 		init-method="init" destroy-method="destroy">
+	</bean>
+
+	<bean id="RandomValidateCode" class="com.key.tools.captcha.RandomValidateCode">
+		<property name="width" value="80" />
+		<property name="height" value="26" />
+		<property name="lineSize" value="40" />
+		<property name="stringNum" value="4" />
+		<property name="randString" value="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 	</bean>
 
 </beans>
