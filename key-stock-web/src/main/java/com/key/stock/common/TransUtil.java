@@ -10,16 +10,17 @@ public class TransUtil
 {
 	public static StockVO transToStockVO(Stock stock, StockCollect stockCollect)
 	{
-		if (stock==null)
+		if (stock == null)
 		{
 			return null;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		StockVO stockVO = new StockVO();
-		if (stockCollect!=null)
+		if (stockCollect != null)
 		{
 			stockVO.setAddTime(sdf.format(stockCollect.getCreateTime()));
-		}	
+			stockVO.setIsCollected(true);
+		}
 		stockVO.setCode(stock.getStockCode());
 		stockVO.setExChange(stock.getStockExchange());
 		stockVO.setId(stock.getId());

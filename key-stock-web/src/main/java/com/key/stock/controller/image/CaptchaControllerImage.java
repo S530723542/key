@@ -11,10 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.key.tools.captcha.RandomValidateCode;
 import com.key.tools.captcha.pojo.CaptchaVO;
+import com.key.tools.common.ErrCode;
+import com.key.tools.common.RestResult;
 
 @RequestMapping("/key/web/")
 @Controller
@@ -22,7 +25,7 @@ public class CaptchaControllerImage
 {
 	private Logger logger = Logger.getLogger(CaptchaControllerImage.class);
 
-	private static final String CAPTCHA = "Captcha";
+	private static final String CAPTCHA = "captcha";
 
 	@Autowired
 	RandomValidateCode randomValidateCode;
@@ -46,6 +49,27 @@ public class CaptchaControllerImage
 			e.printStackTrace();
 			logger.error("生成验证码失败", e);
 		}
+	}
+
+	@RequestMapping(value = "stock/vertifyCaptcha", method = RequestMethod.POST)
+	public @ResponseBody RestResult<Boolean> vertifyCaptcha(ModelMap model,
+			HttpSession session, HttpServletResponse response,
+			HttpServletRequest request,
+			@RequestParam(value = "captcha", required = true) String captcha)
+	{
+		RestResult<Boolean> result = new RestResult<Boolean>();
+		try
+		{
+			result.setData(vertifyCaptcha(session, captcha));
+		} catch (Exception e)
+		{
+			logger.error("vertifyCaptcha failed!", e);
+			result.setData(false);
+			result.setErrCode(ErrCode.SYSTEM_ERROR);
+			result.setErrMsg(e.getMessage());
+		}
+
+		return result;
 	}
 
 	public static boolean vertifyCaptcha(HttpSession session, String captcha)

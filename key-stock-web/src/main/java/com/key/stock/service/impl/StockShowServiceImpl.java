@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.key.stock.common.Constant;
 import com.key.stock.common.SinaUtil;
 import com.key.stock.common.SourceType;
 import com.key.stock.common.TransUtil;
@@ -28,10 +27,10 @@ public class StockShowServiceImpl implements StockShowService
 {
 
 	@Autowired
-	StockCollectMapper	stockCollectMapper;
+	StockCollectMapper stockCollectMapper;
 
 	@Autowired
-	StockService		stockService;
+	StockService stockService;
 
 	@Transactional
 	public int collectStock(long userId, long stockId)
@@ -98,10 +97,14 @@ public class StockShowServiceImpl implements StockShowService
 		return ErrCode.SUCCESS;
 	}
 
-	public List<StockVO> getStockCollectsByUserId(long userId, String source,
+	public List<StockVO> getStockCollectsByUserId(Long userId, String source,
 			String type, Integer pageNum, Integer pageSize)
 	{
 		List<StockVO> result = new ArrayList<StockVO>();
+		if (userId == null)
+		{
+			return result;
+		}
 		ListRecord<StockCollect> listRecord = new ListRecord<StockCollect>();
 		StockCollect record = new StockCollect();
 		record.setUserId(userId);
@@ -117,7 +120,6 @@ public class StockShowServiceImpl implements StockShowService
 			StockCollect stockCollect = list.get(i);
 			Stock stock = stockService.getStockById(stockCollect.getStockId());
 			StockVO stockVO = TransUtil.transToStockVO(stock, stockCollect);
-			stockVO.setIsCollected(true);
 			addImage(source, type, stockVO);
 			result.add(stockVO);
 		}
@@ -256,6 +258,13 @@ public class StockShowServiceImpl implements StockShowService
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public long countStocksByExchange(String exchange)
+	{
+		long count=stockService.count(exchange);
+		return count;
 	}
 
 }

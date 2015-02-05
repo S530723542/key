@@ -27,10 +27,10 @@ import com.key.tools.stock.pojo.ExCode;
 public class StockControllerRest
 {
 
-	private Logger		logger	= Logger.getLogger(StockControllerRest.class);
+	private Logger logger = Logger.getLogger(StockControllerRest.class);
 
 	@Autowired
-	StockShowService	stockShowService;
+	StockShowService stockShowService;
 
 	@RequestMapping(value = "stock/show", method = RequestMethod.GET)
 	public @ResponseBody RestResult<ListRecord<StockVO>> showStock(
@@ -72,7 +72,6 @@ public class StockControllerRest
 				{
 					boolean isExist = stockShowService.isExistStockCollect(
 							userId, stockVO.getId());
-
 					stockVO.setIsCollected(isExist);
 
 				} else
@@ -86,15 +85,35 @@ public class StockControllerRest
 
 			} else
 			{
-				List<StockVO> list = stockShowService.getStockCollectsByUserId(
-						userId, source, type, pageNum, pageSize);
-				int count = stockShowService.countStockCollectsByUserId(userId);
-				listRecord.setTotalNum(count);
+				List<StockVO> list = null;
+				if (userId == null)
+				{
+					list = new ArrayList<StockVO>();
+					exCodeString = "sh600000";
+					ExCode exCode = new ExCode();
+					exCode = exCode.parseExCode(exCodeString);
+					StockVO stockVO = stockShowService.getStockVOByExCode(
+							exCode.getExChange(), exCode.getCode(), source,
+							type);
+					long count = stockShowService.countStocksByExchange(null);
+					listRecord.setTotalNum((int)count);
+					list.add(stockVO);
+
+				} else
+				{
+					list = stockShowService.getStockCollectsByUserId(userId,
+							source, type, pageNum, pageSize);
+					int count = stockShowService.countStockCollectsByUserId(userId);
+					listRecord.setTotalNum(count);
+
+				}
 				listRecord.setList(list);
 				restResult.setData(listRecord);
+
 			}
 		} catch (Exception e)
 		{
+			e.printStackTrace();
 			logger.error("get stock failed!", e);
 			restResult.setErrCode(ErrCode.SYSTEM_ERROR);
 			restResult.setErrMsg(e.getMessage());
@@ -125,8 +144,8 @@ public class StockControllerRest
 				if (errCode != 0)
 				{
 					restResult.setData(false);
-				}
-				else {
+				} else
+				{
 					restResult.setData(true);
 				}
 			}

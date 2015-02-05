@@ -10,13 +10,12 @@ public interface StockShowService
 
 	public int deleteStockCollect(long userId, long stockId);
 
-	// public StockVO getStockCollect(long userId, long stockId, String
-	// source,String type);
-
-	public List<StockVO> getStockCollectsByUserId(long userId, String source,
+	public List<StockVO> getStockCollectsByUserId(Long userId, String source,
 			String type, Integer pageNum, Integer pageSize);
 
 	public int countStockCollectsByUserId(long userId);
+	
+	public long countStocksByExchange(String exchange);
 
 	public int upStockCollect(long id);
 
